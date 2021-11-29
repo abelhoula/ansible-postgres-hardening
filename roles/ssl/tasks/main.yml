@@ -1,2 +1,3 @@
 ---
 - include: ssl.yml
+- include: ad.yml

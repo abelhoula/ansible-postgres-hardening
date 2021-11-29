@@ -9,7 +9,7 @@ servercertfile: "{{ certdir }}/server-cert.pem"
 serverkeyfile: "{{ certdir }}/server-key.pem"
 clientcertfile: "{{ certdir }}/client-cert.pem"
 clientkeyfile: "{{ certdir }}/client-key.pem"
-crlfile: "{{ pgdatadir }}/root.crl"
+#crlfile: "{{ pgdatadir }}/root.crl"
 cafile: "{{ certdir }}/ca-cert.pem"
 cakeyfile: "{{ certdir }}/ca-key.pem"
 sslminversion: TLSv1
@@ -21,3 +21,11 @@ pglogdirname: pg_log
 pgconffile: "{{ pgdatadir }}/postgresql.conf"
 
 pgport: 5432
+
+client_subnet: 192.168.55.0/24
+ldapserver: 192.168.55.200
+ldapbasedn: '"cn=Users,dc=samplecompany,dc=local"' # domains hierarchy starting point search
+ldapbinddn: '"CN=ldap,CN=Users,dc=samplecompany,dc=local"' # specifies the AD user, which will authenticate to AD to perform the searches
+ldapbindpasswd: '"myPASSword!"'  # sets the password for the ldap user
+ldapsearchattribute: '"sAMAccountName"' # indicates the AD attribute that will be searched for.
+

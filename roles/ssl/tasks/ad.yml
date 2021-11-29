@@ -1,0 +1,16 @@
+---
+- name: Update hba config file
+  copy:
+    dest: "{{ pgdatadir }}/pg_hba.conf"
+    content: |    
+      # TYPE  DATABASE        USER            ADDRESS                 METHOD
+      local   all             postgres                                trust
+      host    replication     replication     127.0.0.1/32            trust
+      host    all             postgres        127.0.0.1/32            trust
+      hostssl all             all             0.0.0.0/0               cert clientcert=verify-full
+      host all all {{ client_subnet }} ldap ldapserver={{ ldapserver }} ldapbasedn={{ ldapbasedn }} ldapbinddn={{ ldapbinddn }} ldapbindpasswd={{ ldapbindpasswd }} ldapsearchattribute="{{ ldapsearchattribute }}"
+
+  become: yes
+  become_user: postgres 
+  notify:
+    - restart postgres

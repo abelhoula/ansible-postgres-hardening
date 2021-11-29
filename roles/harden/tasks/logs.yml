@@ -1,0 +1,67 @@
+---
+
+- name: Enable log_connections parameter
+  postgresql_set:
+    name: log_connections
+    value: "on"
+  become_user: postgres
+
+- name: Enable log_disconnections parameter
+  postgresql_set:
+    name: log_disconnections
+    value: "on"
+  become_user: postgres
+
+- name: Ensure the log file permissions are set correctly
+  postgresql_set:
+    name: log_file_mode
+    value: "0600"
+  become_user: postgres
+
+- name: Ensure log_statement is set correctly
+  postgresql_set:
+    name: log_statement
+    value: "ddl"
+  become_user: postgres
+
+- name: Enable log_duration
+  postgresql_set:
+    name: log_duration
+    value: "on"
+  become_user: postgres
+
+- name: Ensure log_min_duration_statement is disabled
+  postgresql_set:
+    name: log_min_duration_statement
+    value: "-1"
+  become_user: postgres
+
+- name: Ensure the filename pattern for log files is set correctly  
+  postgresql_set:
+    name: log_filename
+    value: postgresql-%Y%m%d.log
+  become_user: postgres
+
+- name: Ensure the maximum log file lifetime is set correctly 
+  postgresql_set:
+    name: log_rotation_age
+    value: 1h
+  become_user: postgres
+
+- name: Ensure the maximum log file size is set correctly
+  postgresql_set:
+    name: log_rotation_size
+    value: 1GB
+  become_user: postgres
+
+- name: Enable log_checkpoints
+  postgresql_set:
+    name: log_checkpoints
+    value: "on"
+  become_user: postgres
+
+- name: Ensure log_error_verbosity is set correctly
+  postgresql_set:
+    name: log_error_verbosity
+    value: verbose
+  become_user: postgres 

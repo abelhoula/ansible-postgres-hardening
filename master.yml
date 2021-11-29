@@ -1,0 +1,7 @@
+- name: setup postgresql server
+  hosts: dbservers
+  gather_facts: yes
+  become: yes
+  roles:
+    - { role: install}
+    - { role: harden}

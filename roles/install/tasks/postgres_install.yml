@@ -1,0 +1,49 @@
+---
+- name: Add postgresql repositories
+  dnf:
+    name: 'https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm'
+    state: present
+    disable_gpg_check: yes
+- name: Disable buit-in Postgresql module
+  command: dnf -qy module disable postgresql
+  args:
+    warn: false
+
+- name: Install  postgres {{ pgversion }}
+  dnf:
+    name: 'postgresql{{ pgversion }}-server'
+    state: present
+
+- name: Install psql Contrib package
+  dnf:
+    name: "postgresql{{ pgversion }}-contrib"
+
+- name: Find out if PostgreSQL is initialized
+  stat:
+    path: "{{ pgdatadir }}/pg_hba.conf"
+  register: postgres_data
+  become: yes
+  become_user: postgres
+
+- name: Initialize PostgreSQL {{ pgversion }}
+  command: "postgresql-{{ pgversion }}-setup initdb"
+  when: not postgres_data.stat.exists
+
+- name: Start and enable postgres services
+  systemd: 
+    name: "postgresql-{{ pgversion }}"
+    state: started 
+    enabled: yes
+
+- name: Download pip installer
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+
+- name: Install pip 3
+  command: /usr/bin/python3 /tmp/get-pip.py
+
+- name: Make sure psycopg2 is installed
+  pip:
+    name: psycopg2-binary
+    executable: pip3.6

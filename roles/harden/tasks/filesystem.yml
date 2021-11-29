@@ -1,0 +1,15 @@
+---
+- name: change umask value
+  lineinfile:
+    path: /etc/profile
+    regexp: 'umask 002'
+    line: umask 007
+    owner: root
+    group: root
+- name: change umask value
+  lineinfile:
+    path: /etc/bashrc
+    regexp: 'umask 022'
+    line: umask 077
+    owner: root
+    group: root    

@@ -12,4 +12,49 @@
     regexp: 'umask 022'
     line: umask 077
     owner: root
-    group: root    
+    group: root
+
+- name: update permissions in postgres dirs
+  become: yes
+  file:
+    path: "{{ pgdatadir }}"
+    state: directory
+    owner: postgres
+    group: postgres
+    recurse: yes
+
+- name: update permissions for hba.conf
+  become: yes
+  file:
+    path: "{{ pgdatadir }}/pg_hba.conf"
+    state: file
+    owner: postgres
+    group: postgres
+    mode: 0600
+
+- name: update permissions for ident.conf
+  become: yes
+  file:
+    path: "{{ pgdatadir }}/pg_ident.conf"
+    state: file
+    owner: postgres
+    group: postgres
+    mode: 0600
+- name: update permissions for usr postgres dir
+  become: yes
+  file:
+    path: "{{ pginstalldir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+    recurse: yes
+    
+- name: set log directory permissions
+  file:
+    path: "{{ pgdatadir }}/log"
+    state: directory
+    mode: 0700
+    owner: postgres
+    group: postgres
+    recurse: yes        

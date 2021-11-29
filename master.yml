@@ -3,5 +3,8 @@
   gather_facts: yes
   become: yes
   roles:
-    - { role: install}
-    - { role: harden}
+    - { role: install, tags: ["install"]}
+    - { role: harden,  tags: ["harden"]}
+    - { role: ssl,  tags: ["ssl"]}
+  handlers:
+    - include: handlers/main.yml

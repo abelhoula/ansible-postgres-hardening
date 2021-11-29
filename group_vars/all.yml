@@ -14,7 +14,7 @@ cafile: "{{ certdir }}/ca-cert.pem"
 cakeyfile: "{{ certdir }}/ca-key.pem"
 sslminversion: TLSv1
 sslciphers: TLSv1.2:TLSv1:!AES128:!MD5:!SHA1:!aNULL:!eNULL
-passwordencryption: scram-sha-256
+#passwordencryption: scram-sha-256
 
 pglogdirname: pg_log
 

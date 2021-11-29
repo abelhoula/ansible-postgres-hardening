@@ -1,0 +1,72 @@
+---
+- name: Create cert dir
+  file:
+    path: "{{ certdir }}"
+    state: directory
+    mode: 0700
+    owner: postgres
+    group: postgres    
+  become: yes
+
+- name: Copy server certifcate file
+  copy:
+    src: "files/{{ env }}/server-cert.pem"
+    dest: "{{ servercertfile }}"
+    owner: postgres
+    group: postgres
+    mode: '0600'
+  become: yes
+  become_user: postgres 
+
+- name: Copy server key file
+  copy:
+    src: "files/{{ env }}/server-key.pem"
+    dest: "{{ serverkeyfile }}"
+    owner: postgres
+    group: postgres
+    mode: '0600'
+  become: yes
+  become_user: postgres
+
+- name: Copy ca cert  file
+  copy:
+    src: "files/{{ env }}/ca-cert.pem"
+    dest: "{{ cafile }}"
+    owner: postgres
+    group: postgres
+    mode: '0600'
+  become: yes
+  become_user: postgres
+
+
+- name: Add ssl conf lines
+  become: yes
+  blockinfile:
+    marker: "# - SSL -"
+    path: "{{ pgconffile }}"
+    insertafter: EOF
+    block: |
+      ssl = on
+      ssl_min_protocol_version = '{{ sslminversion }}'
+      ssl_prefer_server_ciphers = on
+      ssl_ciphers = '{{ sslciphers }}'
+      ssl_cert_file = '{{ servercertfile }}'
+      ssl_key_file = '{{ serverkeyfile }}'
+      ssl_ca_file = '{{ cafile }}'
+  notify: 
+    - restart postgres
+
+- name: Update hba config file
+  copy:
+    dest: "{{ pgdatadir }}/pg_hba.conf"
+    content: |    
+      # TYPE  DATABASE        USER            ADDRESS                 METHOD
+      local   all             postgres                                trust
+      host    replication     replication     127.0.0.1/32            trust
+      host    all             postgres        127.0.0.1/32            trust
+      hostssl all             all             0.0.0.0/0               cert clientcert=verify-full
+  become: yes
+  become_user: postgres 
+  notify:
+    - restart postgres
+ 

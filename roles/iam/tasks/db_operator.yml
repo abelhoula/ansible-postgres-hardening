@@ -10,9 +10,10 @@
 - name: Create db users
   postgresql_user:
     state: present
-    name: "{{ item.value.db_username }}"
+    name: "{{ item.1 }}"
    # password: "{{ db_password }}"
-  loop: "{{ lookup('dict', db_client) }}" 
+  loop: "{{ query('subelements', db_client, 'db_users')  }}" 
+  #loop: "{{ lookup('dict', db_client) }}" 
   become: yes
   become_user: postgres
 
@@ -20,9 +21,9 @@
   postgresql_privs:
     type: database
     database: "{{ item.value.db_name }}"
-    roles: "{{ item.value.db_username }}"
+    roles: "{{ item.value.db_users | join(',') }}"        
     grant_option: "{{ item.value.grant_option }}"
-    privs: "{{ item.value.priv }}"
+    privs: "{{ item.value.priv.0 }}"
   loop: "{{ lookup('dict', db_client) }}"   
   become: yes
   become_user: postgres

@@ -1,13 +1,21 @@
 db_client:                                         # Dict of db/user/permission
-  db.client1:                                      # Domain
-    db_username: "test_1"                          # db username
+  db.client1:
+    db_users:                                      # the list of users to create for that DB
+      - test_1
+      - test_11
     db_name: "test_1"                              # db name
-    priv: all                                      # privileges
+    priv:                                          # privileges
+      - ALL                                       
     grant_option: no  
     domain: "client.domain"
   db.client2:
-    db_username: "test_2"
+    db_users:
+      - test_2
+      - test_22
+      - test_222
+      - test_2222
     db_name: "test_2"
-    priv: CONNECT
+    priv:
+      - CONNECT
     grant_option: no  
     domain: "client.domain"

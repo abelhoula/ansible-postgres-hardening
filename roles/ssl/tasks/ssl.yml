@@ -56,17 +56,4 @@
   notify: 
     - restart postgres
 
-- name: Update hba config file
-  copy:
-    dest: "{{ pgdatadir }}/pg_hba.conf"
-    content: |    
-      # TYPE  DATABASE        USER            ADDRESS                 METHOD
-      local   all             postgres                                trust
-      host    replication     replication     127.0.0.1/32            trust
-      host    all             postgres        127.0.0.1/32            trust
-      hostssl all             all             0.0.0.0/0               cert clientcert=verify-full
-  become: yes
-  become_user: postgres 
-  notify:
-    - restart postgres
  

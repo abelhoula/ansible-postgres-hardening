@@ -1,0 +1,10 @@
+---
+- name: debug dict
+  debug:
+    msg: "dbname {{ item.value.db_name }} ; db_user is {{ item.value.db_username }} ; privileges are    ({{ item.value.priv }})"
+  loop: "{{ lookup('dict', db_client) }}"
+
+- name: format dict priv
+  debug:
+    msg: "({{ item.value.priv | join(',') }})"
+  loop: "{{ lookup('dict', db_client) }}"

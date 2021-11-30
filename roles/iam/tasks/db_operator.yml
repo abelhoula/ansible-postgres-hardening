@@ -1,0 +1,28 @@
+---
+- name: Create databases
+  postgresql_db:
+    state: present
+    name: "{{ item.value.db_name }}"
+  loop: "{{ lookup('dict', db_client) }}" 
+  become: yes
+  become_user: postgres
+
+- name: Create db users
+  postgresql_user:
+    state: present
+    name: "{{ item.value.db_username }}"
+   # password: "{{ db_password }}"
+  loop: "{{ lookup('dict', db_client) }}" 
+  become: yes
+  become_user: postgres
+
+- name: Grant db user access to db
+  postgresql_privs:
+    type: database
+    database: "{{ item.value.db_name }}"
+    roles: "{{ item.value.db_username }}"
+    grant_option: "{{ item.value.grant_option }}"
+    privs: "{{ item.value.priv }}"
+  loop: "{{ lookup('dict', db_client) }}"   
+  become: yes
+  become_user: postgres

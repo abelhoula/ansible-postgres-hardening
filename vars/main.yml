@@ -1,0 +1,13 @@
+db_client:                                         # Dict of db/user/permission
+  db.client1:                                      # Domain
+    db_username: "test_1"                          # db username
+    db_name: "test_1"                              # db name
+    priv: all                                      # privileges
+    grant_option: no  
+    domain: "client.domain"
+  db.client2:
+    db_username: "test_2"
+    db_name: "test_2"
+    priv: CONNECT
+    grant_option: no  
+    domain: "client.domain"

@@ -13,7 +13,6 @@
     name: "{{ item.1 }}"
    # password: "{{ db_password }}"
   loop: "{{ query('subelements', db_client, 'db_users')  }}" 
-  #loop: "{{ lookup('dict', db_client) }}" 
   become: yes
   become_user: postgres
 

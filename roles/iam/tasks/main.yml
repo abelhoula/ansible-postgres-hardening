@@ -1,3 +1,2 @@
 ---
-- include: test.yml
 - include: db_operator.yml

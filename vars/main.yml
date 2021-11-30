@@ -4,7 +4,7 @@ db_client:                                         # Dict of db/user/permission
       - test_1
       - test_11
     db_name: "test_1"                              # db name
-    priv:                                          # privileges
+    priv:                                          # privileges for database type https://docs.ansible.com/ansible/latest/collections/community/postgresql/postgresql_privs_module.html#ansible-collections-community-postgresql-postgresql-privs-module
       - ALL                                       
     grant_option: no  
     domain: "client.domain"

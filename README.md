@@ -1,4 +1,4 @@
-# shoptimals-psql
+# postgres hardening
 
 ## Prepare local development machine with Vagrant (centos8)
 
